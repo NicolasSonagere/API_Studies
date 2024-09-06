@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
       paddingLeft:5
     },
     btnGe: {
-      width: '20%',
+      width: '15%',
       height: 30,
       backgroundColor: '#fcba03',
       borderRadius: 10,
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
       marginLeft: 5
     },
     btnPu: {
-      width: '20%',
+      width: '15%',
       height: 30,
       backgroundColor: '#03a1fc',
       borderRadius: 10,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
       marginLeft: 5
     },
     btnDe: {
-      width: '20%',
+      width: '15%',
       height: 30,
       backgroundColor: '#ff6347',
       borderRadius: 10,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
       marginLeft: 5
     },
     btnLim: {
-      width: '20%',
+      width: '15%',
       height: 30,
       backgroundColor: 'white',
       borderRadius: 10,

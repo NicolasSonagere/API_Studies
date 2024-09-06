@@ -128,6 +128,7 @@ export default function Home() {
     }
 
     const limpar = () => {
+        setID('')
         setFilmeG('')
         setGeneroG('')
         setAnoG('')
