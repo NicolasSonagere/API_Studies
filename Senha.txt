@@ -1,0 +1,4 @@
+careca@lisa
+Semdente@2024
+
+pip install djangorestframework-simplejwt
