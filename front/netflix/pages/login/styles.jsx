@@ -4,7 +4,9 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems:'center',
-      justifyContent:'center'
+      justifyContent:'center',
+      paddingLeft: '15%',
+      paddingRight: '15%'
     },
     caixa:{
       borderWidth:1,

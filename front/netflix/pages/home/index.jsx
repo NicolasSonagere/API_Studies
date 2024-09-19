@@ -44,11 +44,25 @@ export default function Home() {
                     }
                 }
             )
+            const response2 = await axios.get(
+                'http://127.0.0.1:8000/api/genero/' + response.data.genero, {
+                    headers:{
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
+            const response3 = await axios.get(
+                'http://127.0.0.1:8000/api/classif/' + response.data.classif, {
+                    headers:{
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
             console.log(response.data)
             setFilmeG(response.data.titulo)
-            setGeneroG(response.data.genero)
+            setGeneroG(response2.data.genero)
             setAnoG(response.data.ano)
-            setClassifG(response.data.classif)
+            setClassifG(response3.data.classif)
             setIdiomaG(response.data.idioma)
         } catch {
             console.log(Error)
@@ -178,34 +192,40 @@ export default function Home() {
                     value={filmeG}
                     onChangeText={(e) => setFilmeG(e)}
                 />
+                <View style={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-between', width: '90%'}}>
+                    <View style={{ width: '50%', }}>
+                        <Text>Gênero</Text>
+                        <TextInput
+                            style={styles.caixaGet}
+                            value={generoG}
+                            onChangeText={(e) => setGeneroG(e)}
+                        />
 
-                <Text>Gênero</Text>
-                <TextInput
-                    style={styles.caixaGet}
-                    value={generoG}
-                    onChangeText={(e) => setGeneroG(e)}
-                />
+                        <Text>Ano</Text>
+                        <TextInput
+                            style={styles.caixaGet}
+                            value={anoG}
+                            onChangeText={(e) => setAnoG(e)}
+                        />
 
-                <Text>Ano</Text>
-                <TextInput
-                    style={styles.caixaGet}
-                    value={anoG}
-                    onChangeText={(e) => setAnoG(e)}
-                />
+                        <Text>Idioma</Text>
+                        <TextInput
+                            style={styles.caixaGet}
+                            value={idiomaG}
+                            onChangeText={(e) => setIdiomaG(e)}
+                        />
 
-                <Text>Idioma</Text>
-                <TextInput
-                    style={styles.caixaGet}
-                    value={idiomaG}
-                    onChangeText={(e) => setIdiomaG(e)}
-                />
+                        <Text>Classificação</Text>
+                        <TextInput
+                            style={styles.caixaGet}
+                            value={classifG}
+                            onChangeText={(e) => setClassifG(e)}
+                        />
+                    </View>
+                    <View style={{ width: '50%', backgroundColor:'gray', borderRadius: '15px'}}>
 
-                <Text>Classificação</Text>
-                <TextInput
-                    style={styles.caixaGet}
-                    value={classifG}
-                    onChangeText={(e) => setClassifG(e)}
-                />
+                    </View>
+                </View>
             </View>
 
             <View style={styles.stPost}>
@@ -221,33 +241,38 @@ export default function Home() {
                     onChangeText={(e) => { setFilme(e) }}
                     style={styles.caixaPost}
                 />
-                <Text>Gênero</Text>
-                <TextInput
-                    value={genero}
-                    onChangeText={(e) => { setGenero(e) }}
-                    style={styles.caixaPost}
-                />
-                <Text>Ano</Text>
-                <TextInput
-                    value={ano}
-                    onChangeText={(e) => { setAno(e) }}
-                    style={styles.caixaPost}
-                />
-                <Text>Idioma</Text>
-                <TextInput
-                    value={idioma}
-                    onChangeText={(e) => { setIdioma(e) }}
-                    style={styles.caixaPost}
-                />
-                <Text>Classificação</Text>
-                <TextInput
-                    value={classif}
-                    onChangeText={(e) => { setClassif(e) }}
-                    style={styles.caixaPost}
-                />
+                <View style={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-between', width: '90%'}}>
+                    <View style={{ width: '50%', }}>
+                        <Text>Gênero</Text>
+                        <TextInput
+                            value={genero}
+                            onChangeText={(e) => { setGenero(e) }}
+                            style={styles.caixaPost}
+                        />
+                        <Text>Ano</Text>
+                        <TextInput
+                            value={ano}
+                            onChangeText={(e) => { setAno(e) }}
+                            style={styles.caixaPost}
+                        />
+                        <Text>Idioma</Text>
+                        <TextInput
+                            value={idioma}
+                            onChangeText={(e) => { setIdioma(e) }}
+                            style={styles.caixaPost}
+                        />
+                        <Text>Classificação</Text>
+                        <TextInput
+                            value={classif}
+                            onChangeText={(e) => { setClassif(e) }}
+                            style={styles.caixaPost}
+                        />
+                    </View>
+                    <View style={{ width: '50%', backgroundColor:'white', borderRadius: '15px', border: 'solid 1px'}}>
+
+                    </View>
+                </View>
             </View>
-
-
         </View>
     )
 }
