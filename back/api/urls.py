@@ -18,4 +18,5 @@ urlpatterns = [
     path('genero/', views.GeneroAllViews.as_view()),
     path('classif/<int:pk>', views.ClassifViews.as_view()),
     path('classif/', views.ClassifAllViews.as_view()),
+    path('imagem/', views.ImagemViews.as_view()),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, TextInput, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
 import styles from './styles';
 import axios from 'axios';
 
@@ -17,6 +18,9 @@ export default function Home() {
     const [classif, setClassif] = useState('')
     const [idioma, setIdioma] = useState('')
     const [token, setToken] = useState('')
+    const [base64, setBase64] = useState(null);
+    const [imageName, setImageName] = useState(null)
+    const [imageSource, setImageSource] = useState('../../assets/favicon.png')
 
     useEffect(() => {
         AsyncStorage.getItem('token')
@@ -33,7 +37,7 @@ export default function Home() {
                     console.error('Erro ao salvar o token', error)
                 }
             )
-    }, [])
+    }, [base64, imageName]);
 
     const capturar = async () => {
         try {
@@ -64,6 +68,7 @@ export default function Home() {
             setAnoG(response.data.ano)
             setClassifG(response3.data.classif)
             setIdiomaG(response.data.idioma)
+            setFileNameG(response.data.fileName)
         } catch {
             console.log(Error)
         }
@@ -75,23 +80,28 @@ export default function Home() {
                 'http://127.0.0.1:8000/api/listarfilmes',
                 {
                     titulo: filme,
-                    genero: genero,
+                    genre: genero,
                     ano: ano,
                     classif: classif,
-                    idioma: idioma
-                },
-                {
-                    headers:{
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            )
+                    idioma: idioma,
+                    fileName: imageName
+                  },
+                  {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                );
+          
+            uploadImage(base64, imageName, token)
+            
             console.log('Dados inseridos com sucesso...')
             setFilme('')
             setGenero('')
             setAno('')
             setClassif('')
             setIdioma('')
+            setBase64(null)
 
         } catch (error) {
             console.log('Erro ao inserir os dados...', error)
@@ -149,6 +159,55 @@ export default function Home() {
         setClassifG('')
         setIdiomaG('')
     }
+
+    const pickImage = async () => {
+        // Abre a galeria para seleção de imagem
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        // Se o usuário não cancelar, executa o upload
+        if (!result.canceled) {
+          const imageName = result.assets[0].fileName || "image.jpg"; // Definir o nome do arquivo
+          const imageUri = result.assets[0].uri;
+          setBase64(imageUri); // Armazena a URI da imagem no estado
+          setImageName(imageName)
+        }
+      };
+    
+      // Função de upload da imagem
+      const uploadImage = async (uri, imageName, token) => {
+        let formData = new FormData();
+        formData.append("image", {
+          uri: uri,
+          type: "image/jpeg", // Tipo do arquivo (ajustar conforme necessário)
+          name: imageName, // Nome do arquivo
+        });
+    
+        try {
+          const response = await axios.post(
+            "http://127.0.0.1:8000/api/images/",
+            formData,
+            {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+    
+          console.log("Imagem enviada com sucesso:", response.data);
+        } catch (error) {
+          console.error(
+            "Erro ao enviar a imagem:",
+            error.response ? error.response.data : error.message
+          );
+        }
+      };
+      
 
     return (
         <View style={styles.container}>
@@ -222,8 +281,10 @@ export default function Home() {
                             onChangeText={(e) => setClassifG(e)}
                         />
                     </View>
-                    <View style={{ width: '50%', backgroundColor:'gray', borderRadius: '15px'}}>
-
+                    <View style={{ width: '50%', backgroundColor:'gray', borderRadius: '15px'}} >
+                        <Image
+                            source={{ uri: imageSource}}
+                        />
                     </View>
                 </View>
             </View>
@@ -268,9 +329,13 @@ export default function Home() {
                             style={styles.caixaPost}
                         />
                     </View>
-                    <View style={{ width: '50%', backgroundColor:'white', borderRadius: '15px', border: 'solid 1px'}}>
-
-                    </View>
+                    <Pressable style={{ width: '50%', backgroundColor:'white', borderRadius: '15px', border: 'solid 1px'}} onPress={pickImage}>
+                        <Image
+                            source={{
+                                uri: base64,
+                            }}
+                        />
+                    </Pressable>
                 </View>
             </View>
         </View>
